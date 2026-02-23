@@ -5,9 +5,10 @@ import { yupToFormError2 } from "../utils/yupToFormErrors2";
 
 function Signup() {
   const styles = {
-    inputDiv: "space-y-2",
+    inputDiv: "flex gap-2",
     inputBox: "border border-accent rounded-sm",
     textError: "text-red-500 font-medium",
+    labelBox: "min-w-[100px]",
   };
 
   //------ State ------
@@ -17,6 +18,7 @@ function Signup() {
     password: "",
     confirmPassword: "",
     age: "",
+    tel: "",
     terms: false,
   });
 
@@ -52,7 +54,7 @@ function Signup() {
 
   //------ JSX area ------
   return (
-    <div className="max-w-xl w-full shadow-lg bg-white rounded-lg p-2 flex flex-col justify-center items-center space-y-2">
+    <div className="max-w-2xl w-full shadow-lg bg-white rounded-lg p-2 flex flex-col justify-center items-center space-y-2">
       <h1 className="text-3xl text-accent-content bg-amber-200 w-full text-center rounded-md p-2">
         Signup Form
       </h1>
@@ -63,7 +65,7 @@ function Signup() {
         onSubmit={hdlSubmit}
       >
         <div className={styles.inputDiv}>
-          <label>Username:</label>
+          <label className={styles.labelBox}>Username:</label>
           <input
             type="text"
             name="username"
@@ -71,10 +73,10 @@ function Signup() {
             onChange={hdlChange}
             className={styles.inputBox}
           />
-        </div>
         <p className={styles.textError}>{errors.username}</p>
+        </div>
         <div className={styles.inputDiv}>
-          <label>Nickname:</label>
+          <label className={styles.labelBox}>Nickname:</label>
           <input
             type="text"
             name="nickname"
@@ -82,10 +84,10 @@ function Signup() {
             onChange={hdlChange}
             className={styles.inputBox}
           />
-        </div>
         <p className={styles.textError}>{errors.nickname}</p>
+        </div>
         <div className={styles.inputDiv}>
-          <label>Password:</label>
+          <label className={styles.labelBox}>Password:</label>
           <input
             type={showPassword ? "text" : "password"}
             name="password"
@@ -107,7 +109,7 @@ function Signup() {
           <p className={styles.textError}>{errors.password}</p>
         </div>
         <div className={styles.inputDiv}>
-          <label>Confirm Password:</label>
+          <label className={styles.labelBox}>Confirm Password:</label>
           <input
             type={showPassword ? "text" : "password"}
             name="confirmPassword"
@@ -130,7 +132,7 @@ function Signup() {
           <p className={styles.textError}>{errors.confirmPassword}</p>
         </div>
         <div className={styles.inputDiv}>
-          <label>Age:</label>
+          <label className={styles.labelBox}>Age:</label>
           <input
             type="text"
             name="age"
@@ -138,10 +140,21 @@ function Signup() {
             onChange={hdlChange}
             className={styles.inputBox}
           />
+          <p className={styles.textError}>{errors.age}</p>
         </div>
-        <p className={styles.textError}>{errors.age}</p>
         <div className={styles.inputDiv}>
-          <label className="hover:font-bold hover:cursor-pointer">
+          <label className={styles.labelBox}>Tel:</label>
+          <input
+            type="text"
+            name="tel"
+            value={formData.tel}
+            onChange={hdlChange}
+            className={styles.inputBox}
+          />
+          <p className={styles.textError}>{errors.tel}</p>
+        </div>
+        <div className={styles.inputDiv}>
+          <label className={`hover:font-bold hover:cursor-pointer ${styles.labelBox}`}>
             Read and Accepted Terms: {""}
             <input
               type="checkbox"
@@ -151,8 +164,8 @@ function Signup() {
               className="checkbox checkbox-md checkbox-accent"
             />
           </label>
-        </div>
         <p className={styles.textError}>{errors.terms}</p>
+        </div>
         <div className="flex justify-center">
           <button type="submit" className="btn btn-accent">
             Scribe now!
