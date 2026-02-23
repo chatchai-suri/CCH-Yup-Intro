@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { EyeOff, Eye } from "lucide-react";
+import { signupSchema } from "../schemas/signupSchema";
+import { yupToFormError2 } from "../utils/yupToFormErrors2";
 
 function Signup() {
   const styles = {
@@ -24,10 +27,26 @@ function Signup() {
   //------ Function ------
   const hdlChange = (e) => {
     const { type, name, value, checked } = e.target;
-    if (type === "checkbox") {
-      setFormData((prev) => ({ ...prev, [name]: checked }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev)=>({...prev, [name]: type === "checkbox" ? checked : value}))
+    // if (type === "checkbox") {
+    //   setFormData((prev) => ({ ...prev, [name]: checked }));
+    // } else {
+    //   setFormData((prev) => ({ ...prev, [name]: value }));
+    // }
+  };
+
+  const hdlSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Hello, preventDefault!");
+    try {
+      await signupSchema.validate(formData, { abortEarly: false });
+      alert("signup successfully");
+      console.log(formData);
+      setErrors({})
+    } catch (error) {
+      const errorsObject = yupToFormError2(error)
+      console.log(errorsObject);
+      setErrors(errorsObject);
     }
   };
 
@@ -41,6 +60,7 @@ function Signup() {
       <form
         noValidate
         className="w-full border border-accent rounded-lg shadow-lg p-4 space-y-4"
+        onSubmit={hdlSubmit}
       >
         <div className={styles.inputDiv}>
           <label>Username:</label>
@@ -52,7 +72,7 @@ function Signup() {
             className={styles.inputBox}
           />
         </div>
-        <p className={styles.textError}>{`Error from Yup || &{errors}`}</p>
+        <p className={styles.textError}>{errors.username}</p>
         <div className={styles.inputDiv}>
           <label>Nickname:</label>
           <input
@@ -63,7 +83,7 @@ function Signup() {
             className={styles.inputBox}
           />
         </div>
-        <p className={styles.textError}>{`Error from Yup || &{errors}`}</p>
+        <p className={styles.textError}>{errors.nickname}</p>
         <div className={styles.inputDiv}>
           <label>Password:</label>
           <input
@@ -78,10 +98,37 @@ function Signup() {
             onClick={() => setShowPassword(!showPassword)}
             className="btn btn-md btn-ghost"
           >
-            {showPassword ? "Hide" : "Show"}
+            {showPassword ? (
+              <EyeOff size={20} className="text-gray-500" />
+            ) : (
+              <Eye size={20} className="text-gray-500" />
+            )}
           </button>
+          <p className={styles.textError}>{errors.password}</p>
         </div>
-        <p className={styles.textError}>{`Error from Yup || &{errors}`}</p>
+        <div className={styles.inputDiv}>
+          <label>Confirm Password:</label>
+          <input
+            type={showPassword ? "text" : "password"}
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={hdlChange}
+            className={styles.inputBox}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="btn btn-md btn-ghost"
+          >
+            {showPassword ? (
+              <EyeOff size={20} className="text-gray-500" />
+            ) : (
+              <Eye size={20} className="text-gray-500" />
+            )}
+          </button>
+
+          <p className={styles.textError}>{errors.confirmPassword}</p>
+        </div>
         <div className={styles.inputDiv}>
           <label>Age:</label>
           <input
@@ -92,19 +139,20 @@ function Signup() {
             className={styles.inputBox}
           />
         </div>
-        <p className={styles.textError}>{`Error from Yup || &{errors}`}</p>
+        <p className={styles.textError}>{errors.age}</p>
         <div className={styles.inputDiv}>
           <label className="hover:font-bold hover:cursor-pointer">
+            Read and Accepted Terms: {""}
             <input
               type="checkbox"
               name="terms"
-              value={formData.terms}
+              checked={formData.terms}
               onChange={hdlChange}
+              className="checkbox checkbox-md checkbox-accent"
             />
-            Read and Accepted Terms
           </label>
         </div>
-        <p className={styles.textError}>{`Error from Yup || &{errors}`}</p>
+        <p className={styles.textError}>{errors.terms}</p>
         <div className="flex justify-center">
           <button type="submit" className="btn btn-accent">
             Scribe now!
