@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { EyeOff, Eye } from "lucide-react";
 import { signupSchema } from "../schemas/signupSchema";
 import { yupToFormError2 } from "../utils/yupToFormErrors2";
@@ -6,7 +6,7 @@ import { yupToFormError2 } from "../utils/yupToFormErrors2";
 function Signup() {
   const styles = {
     inputDiv: "flex gap-2",
-    inputBox: "border border-accent rounded-sm",
+    inputBox: "border border-accent rounded-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent",
     textError: "text-red-500 font-medium",
     labelBox: "min-w-[100px]",
   };
@@ -21,6 +21,16 @@ function Signup() {
     tel: "",
     terms: false,
   });
+
+  const refs = {
+    username: useRef(null),
+    nickname: useRef(null),
+    password: useRef(null),
+    confirmPassword: useRef(null),
+    age: useRef(null),
+    tel: useRef(null),
+    terms: useRef(null),
+  }
 
   const [errors, setErrors] = useState({});
 
@@ -46,7 +56,7 @@ function Signup() {
       console.log(formData);
       setErrors({})
     } catch (error) {
-      const errorsObject = yupToFormError2(error)
+      const errorsObject = yupToFormError2(error, refs)
       console.log(errorsObject);
       setErrors(errorsObject);
     }
@@ -70,6 +80,7 @@ function Signup() {
             type="text"
             name="username"
             value={formData.username}
+            ref={refs.username}
             onChange={hdlChange}
             className={styles.inputBox}
           />
@@ -81,6 +92,7 @@ function Signup() {
             type="text"
             name="nickname"
             value={formData.nickname}
+            ref={refs.nickname}
             onChange={hdlChange}
             className={styles.inputBox}
           />
@@ -92,6 +104,7 @@ function Signup() {
             type={showPassword ? "text" : "password"}
             name="password"
             value={formData.password}
+            ref={refs.password}
             onChange={hdlChange}
             className={styles.inputBox}
           />
@@ -114,6 +127,7 @@ function Signup() {
             type={showPassword ? "text" : "password"}
             name="confirmPassword"
             value={formData.confirmPassword}
+            ref={refs.confirmPassword}
             onChange={hdlChange}
             className={styles.inputBox}
           />
@@ -137,6 +151,7 @@ function Signup() {
             type="text"
             name="age"
             value={formData.age}
+            ref={refs.age}
             onChange={hdlChange}
             className={styles.inputBox}
           />
@@ -148,6 +163,7 @@ function Signup() {
             type="text"
             name="tel"
             value={formData.tel}
+            ref={refs.tel}
             onChange={hdlChange}
             className={styles.inputBox}
           />
@@ -160,6 +176,7 @@ function Signup() {
               type="checkbox"
               name="terms"
               checked={formData.terms}
+              ref={refs.terms}
               onChange={hdlChange}
               className="checkbox checkbox-md checkbox-accent"
             />
