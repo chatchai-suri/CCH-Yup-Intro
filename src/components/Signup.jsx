@@ -189,9 +189,9 @@ function Signup() {
           </button>
         </div>
       </form>
-      <div className="text-center">
+      {/* <div className="text-center">
         <pre>{JSON.stringify(formData, null, 2)}</pre>
-      </div>
+      </div> */}
     </div>
   );
 }
