@@ -6,7 +6,8 @@ import { yupToFormError2 } from "../utils/yupToFormErrors2";
 function Signup() {
   const styles = {
     inputDiv: "flex gap-2",
-    inputBox: "border border-accent rounded-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent",
+    inputBox:
+      "border border-accent rounded-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent",
     textError: "text-red-500 font-medium",
     labelBox: "min-w-[100px]",
   };
@@ -30,16 +31,19 @@ function Signup() {
     age: useRef(null),
     tel: useRef(null),
     terms: useRef(null),
-  }
-
-  const [errors, setErrors] = useState({});
+  };
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const [errors, setErrors] = useState({});
 
   //------ Function ------
   const hdlChange = (e) => {
     const { type, name, value, checked } = e.target;
-    setFormData((prev)=>({...prev, [name]: type === "checkbox" ? checked : value}))
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
     // if (type === "checkbox") {
     //   setFormData((prev) => ({ ...prev, [name]: checked }));
     // } else {
@@ -54,9 +58,9 @@ function Signup() {
       await signupSchema.validate(formData, { abortEarly: false });
       alert("signup successfully");
       console.log(formData);
-      setErrors({})
+      setErrors({});
     } catch (error) {
-      const errorsObject = yupToFormError2(error, refs)
+      const errorsObject = yupToFormError2(error, refs);
       console.log(errorsObject);
       setErrors(errorsObject);
     }
@@ -71,8 +75,8 @@ function Signup() {
       <h3>Let's study validation by Yup</h3>
       <form
         noValidate
-        className="w-full border border-accent rounded-lg shadow-lg p-4 space-y-4"
         onSubmit={hdlSubmit}
+        className="w-full border border-accent rounded-lg shadow-lg p-4 space-y-4"
       >
         <div className={styles.inputDiv}>
           <label className={styles.labelBox}>Username:</label>
@@ -84,7 +88,7 @@ function Signup() {
             onChange={hdlChange}
             className={styles.inputBox}
           />
-        <p className={styles.textError}>{errors.username}</p>
+          <p className={styles.textError}>{errors.username}</p>
         </div>
         <div className={styles.inputDiv}>
           <label className={styles.labelBox}>Nickname:</label>
@@ -96,7 +100,7 @@ function Signup() {
             onChange={hdlChange}
             className={styles.inputBox}
           />
-        <p className={styles.textError}>{errors.nickname}</p>
+          <p className={styles.textError}>{errors.nickname}</p>
         </div>
         <div className={styles.inputDiv}>
           <label className={styles.labelBox}>Password:</label>
@@ -142,11 +146,10 @@ function Signup() {
               <Eye size={20} className="text-gray-500" />
             )}
           </button>
-
           <p className={styles.textError}>{errors.confirmPassword}</p>
         </div>
         <div className={styles.inputDiv}>
-          <label className={styles.labelBox}>Age:</label>
+          <label>Age:</label>
           <input
             type="text"
             name="age"
@@ -158,7 +161,7 @@ function Signup() {
           <p className={styles.textError}>{errors.age}</p>
         </div>
         <div className={styles.inputDiv}>
-          <label className={styles.labelBox}>Tel:</label>
+          <label>Tel:</label>
           <input
             type="text"
             name="tel"
@@ -170,18 +173,16 @@ function Signup() {
           <p className={styles.textError}>{errors.tel}</p>
         </div>
         <div className={styles.inputDiv}>
-          <label className={`hover:font-bold hover:cursor-pointer ${styles.labelBox}`}>
-            Read and Accepted Terms: {""}
-            <input
-              type="checkbox"
-              name="terms"
-              checked={formData.terms}
-              ref={refs.terms}
-              onChange={hdlChange}
-              className="checkbox checkbox-md checkbox-accent"
-            />
-          </label>
-        <p className={styles.textError}>{errors.terms}</p>
+          <input
+            type="checkbox"
+            name="terms"
+            checked={formData.terms}
+            ref={refs.terms}
+            onChange={hdlChange}
+            className={styles.inputBox}
+          />
+          <label>Read and Accepted Terms</label>
+          <p className={styles.textError}>{errors.terms}</p>
         </div>
         <div className="flex justify-center">
           <button type="submit" className="btn btn-accent">
@@ -189,9 +190,9 @@ function Signup() {
           </button>
         </div>
       </form>
-      {/* <div className="text-center">
+      <div className="text-center">
         <pre>{JSON.stringify(formData, null, 2)}</pre>
-      </div> */}
+      </div>
     </div>
   );
 }

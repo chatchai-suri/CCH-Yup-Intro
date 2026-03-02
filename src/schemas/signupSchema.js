@@ -17,7 +17,7 @@ export const signupSchema = Yup.object({
   age: Yup.number()
     .transform((value, originalValue)=> originalValue === "" ? undefined : value)
     .typeError("please enter only number ")
-    .min(14, "age must higher than 14")
+    .min(14, "age must higher than 13")
     .required("please enter your age"),
   tel: Yup.string()
     .matches(/^\d{10}$/, "please input 10 digits of phone numbers")
